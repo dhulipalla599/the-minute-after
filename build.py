@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
-"""Build 'I Know, But I Can Do Nothing'.
+"""Build 'The Minute After'.
 
 Outputs (all from chapters/*.md, the single source of truth):
   docs/         GitHub Pages site (multi-page: index + one page per chapter)
   preview.html  Single-page preview (cover + contents + Chapter 1 in full)
   book.epub     Kindle EPUB, built with pandoc
 
+Images (optional, wired in automatically when present):
+  assets/cover.png                     -> site cover, preview cover, EPUB cover
+  assets/illustration-<slug>.png       -> that chapter's page, preview, EPUB
+See ART_DIRECTION.md for the illustration style.
+
 Run:  python3 build.py
 """
+import base64
 import shutil
 import subprocess
+import tempfile
 from pathlib import Path
 
 import markdown
@@ -17,6 +24,8 @@ import markdown
 ROOT = Path(__file__).resolve().parent
 CHAPTERS_DIR = ROOT / "chapters"
 DOCS_DIR = ROOT / "docs"
+ASSETS_DIR = ROOT / "assets"
+COVER_IMG = ASSETS_DIR / "cover.png"
 TITLE = "The Minute After"
 SUBTITLE = "Small Acts. Better Days."
 TAGLINE = "One minute of thought, one small decent act, and the day gets better for everyone."
@@ -28,6 +37,15 @@ def parse_chapter(path):
     title = text.splitlines()[0].lstrip("# ").strip()
     forthcoming = "being written" in text
     return title, text, forthcoming
+
+
+def illustration_path(chapter_path):
+    return ASSETS_DIR / f"illustration-{chapter_path.stem}.png"
+
+
+def data_uri(path):
+    mime = "image/png" if path.suffix.lower() == ".png" else "image/jpeg"
+    return f"data:{mime};base64," + base64.b64encode(path.read_bytes()).decode()
 
 
 def md_to_html(text):
@@ -54,11 +72,33 @@ def page_shell(page_title, body_html, css_href="style.css"):
 """
 
 
+def cover_block(img_src):
+    """Cover art if we have an image, text cover otherwise."""
+    if img_src:
+        return (
+            f'<img class="coverimg" src="{img_src}" alt="{TITLE} cover art">\n'
+            f'<p class="tagline">{TAGLINE}</p>\n'
+            f'<p class="author">by {AUTHOR}</p>'
+        )
+    return (
+        f'<div class="kicker">{SUBTITLE}</div>\n'
+        f'<h1>{TITLE}</h1>\n'
+        f'<p class="tagline">{TAGLINE}</p>\n'
+        f'<p class="author">by {AUTHOR}</p>'
+    )
+
+
 def build_site(chapters):
     if DOCS_DIR.exists():
         shutil.rmtree(DOCS_DIR)
     DOCS_DIR.mkdir(parents=True)
-    shutil.copy(ROOT / "assets" / "style.css", DOCS_DIR / "style.css")
+    shutil.copy(ASSETS_DIR / "style.css", DOCS_DIR / "style.css")
+    if COVER_IMG.exists():
+        shutil.copy(COVER_IMG, DOCS_DIR / "cover.png")
+    for path, _t, _x, _f in chapters:
+        ill = illustration_path(path)
+        if ill.exists():
+            shutil.copy(ill, DOCS_DIR / ill.name)
 
     # Index: cover + about + contents.
     toc_items = []
@@ -74,10 +114,7 @@ def build_site(chapters):
     index_body = f"""
 <div class="topnav"><a href="index.html">{TITLE}</a></div>
 <div class="cover">
-<div class="kicker">{SUBTITLE}</div>
-<h1>{TITLE}</h1>
-<p class="tagline">{TAGLINE}</p>
-<p class="author">by {AUTHOR}</p>
+{cover_block("cover.png" if COVER_IMG.exists() else None)}
 </div>
 <hr class="rule">
 <p>We all have those moments. You know the right thing, and you feel you can do nothing about it. Someone is pressured in a meeting. Someone helpless is treated badly. The room goes quiet, and you go quiet with it.</p>
@@ -97,6 +134,11 @@ def build_site(chapters):
     for i, (path, title, text, forthcoming) in enumerate(chapters):
         slug = path.stem
         body = md_to_html(text)
+        ill = illustration_path(path)
+        ill_html = (
+            f'<img class="illustration" src="{ill.name}" '
+            f'alt="Illustration for {title}">' if ill.exists() else ""
+        )
         nav = []
         if i > 0:
             prev = chapters[i - 1]
@@ -116,6 +158,7 @@ def build_site(chapters):
         chap_body = f"""
 <div class="topnav"><a href="index.html">{TITLE}</a></div>
 <h1 class="chapter">{title}</h1>
+{ill_html}
 {body}
 <div class="chapternav">{''.join(f'<span>{n}</span>' for n in nav)}</div>
 """
@@ -126,11 +169,18 @@ def build_site(chapters):
 
 
 def build_preview(chapters):
-    css = (ROOT / "assets" / "style.css").read_text()
+    css = (ASSETS_DIR / "style.css").read_text()
     written = [(p, t, x, f) for p, t, x, f in chapters if not f]
     body_parts = []
-    for _path, title, text, _forth in written:
-        body_parts.append(f'<h1 class="chapter">{title}</h1>\n{md_to_html(text)}')
+    for path, title, text, _forth in written:
+        ill = illustration_path(path)
+        ill_html = (
+            f'<img class="illustration" src="{data_uri(ill)}" '
+            f'alt="Illustration for {title}">' if ill.exists() else ""
+        )
+        body_parts.append(
+            f'<h1 class="chapter">{title}</h1>\n{ill_html}\n{md_to_html(text)}'
+        )
     body_html = "\n<hr class=\"rule\">\n".join(body_parts)
     toc_items = []
     for i, (path, t, _tx, forthcoming) in enumerate(chapters, 1):
@@ -151,10 +201,7 @@ def build_preview(chapters):
 <body>
 <div class="wrap">
 <div class="cover">
-<div class="kicker">{SUBTITLE}</div>
-<h1>{TITLE}</h1>
-<p class="tagline">{TAGLINE}</p>
-<p class="author">by {AUTHOR}</p>
+{cover_block(data_uri(COVER_IMG) if COVER_IMG.exists() else None)}
 </div>
 <hr class="rule">
 <p>We all have those moments. You know the right thing, and you feel you can do nothing about it. This book is about the minute after that moment: one minute of thought, one small decent move, and the day gets better for everyone in the room.</p>
@@ -173,7 +220,6 @@ def build_preview(chapters):
 
 
 def build_epub(chapters):
-    files = [str(p) for p, _t, _x, _f in chapters]
     cmd = [
         "pandoc", "-o", str(ROOT / "book.epub"),
         "--metadata", f"title={TITLE}",
@@ -181,8 +227,24 @@ def build_epub(chapters):
         "--metadata", f"author={AUTHOR}",
         "--metadata", "language=en",
         "--toc", "--toc-depth=1", "--split-level=1",
-    ] + files
-    subprocess.run(cmd, check=True)
+    ]
+    if COVER_IMG.exists():
+        cmd += ["--epub-cover-image", str(COVER_IMG)]
+    # Chapter illustrations: temp copies with the image line after the title.
+    with tempfile.TemporaryDirectory() as tmp:
+        files = []
+        for p, _t, _x, _f in chapters:
+            ill = illustration_path(p)
+            if ill.exists():
+                lines = p.read_text().splitlines()
+                lines.insert(1, "")
+                lines.insert(2, f"![]({ill})")
+                tmp_path = Path(tmp) / p.name
+                tmp_path.write_text("\n".join(lines) + "\n")
+                files.append(str(tmp_path))
+            else:
+                files.append(str(p))
+        subprocess.run(cmd + files, check=True)
 
 
 def main():
