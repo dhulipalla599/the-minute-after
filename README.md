@@ -1,6 +1,6 @@
-# I Know, But I Can Do Nothing
+# The Minute After
 
-**Tagline:** But you can make it better.
+**Tagline:** One minute of thought, one small decent act, and the day gets better for everyone.
 
 A book of life lessons in everyday situations: the moments when you know the
 right thing and feel you can do nothing about it, and the one minute of

@@ -17,8 +17,8 @@ import markdown
 ROOT = Path(__file__).resolve().parent
 CHAPTERS_DIR = ROOT / "chapters"
 DOCS_DIR = ROOT / "docs"
-TITLE = "I Know, But I Can Do Nothing"
-TAGLINE = "But you can make it better."
+TITLE = "The Minute After"
+TAGLINE = "One minute of thought, one small decent act, and the day gets better for everyone."
 AUTHOR = "Venkata Sandeep Dhullipalla"
 
 
