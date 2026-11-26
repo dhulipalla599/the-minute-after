@@ -50,17 +50,22 @@ Build everything with:
 python3 build.py
 ```
 
+Needs the Python `markdown` package and `pandoc` installed. Both are
+system-level installs and do not survive a machine replacement: if the build
+fails with `ModuleNotFoundError`, reinstall them (`pip install
+--break-system-packages markdown`, and the pandoc .deb from GitHub releases)
+and run `gh auth setup-git` before pushing, since the git credential helper
+config is lost the same way.
+
 ## Publish the website on GitHub Pages
 
-1. Create a repository on GitHub (for example,
-   `but-you-can-make-it-better`) and push this folder to it.
-2. In the repository, go to Settings, Pages, and set the source to
-   **Deploy from a branch**, branch `main`, folder **/docs**.
-3. The book is live at
-   `https://<your-github-username>.github.io/but-you-can-make-it-better/`.
+The repository is `dhulipalla599/the-minute-after`, published with GitHub
+Pages from the `/docs` folder on the `main` branch. The book is live at
+https://dhulipalla599.github.io/the-minute-after/.
 
 Every new chapter is just a new Markdown file in `chapters/` followed by
-`python3 build.py` and a push.
+`python3 build.py`, a commit, and a push. GitHub Pages rebuilds the site
+from `/docs` on every push.
 
 ## Read it on a Kindle
 
