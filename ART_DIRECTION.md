@@ -58,9 +58,18 @@ tall windows. Quiet, human, tender, no text in the image.
   attempts). The prompts above are saved here, and `build.py` is already
   wired to pick the files up the moment they exist. Re-run the generation
   when the service is back, then `python3 build.py`, commit, push.
+- 2026-11-26: a typographic cover was built locally instead
+  (`assets/cover.png`, 1600x2560, KDP-ideal) so the book has a real cover now
+  and is ready for KDP. It is the cover in use on the site, the preview, and
+  the EPUB. When the cartoonist cover is generated, drop it in as
+  `assets/cover.png` and rebuild; nothing else changes.
 - Chapters 3-10: write the prompt for each chapter the same way, one image
   per chapter, after the chapter itself is written and approved.
 - 2026-11-26 10:23: second attempt, same result — the image service is
   still unavailable (upstream 503, three attempts each for cover, Ch1, Ch2).
   Do not keep retrying back-to-back; try again later (next session or
   tomorrow) and check the service is back first.
+- 2026-11-26 10:38: third attempt (cover probe only), same 503. The service
+  has now been down all morning. Do not retry again today unless the user
+  asks; try once tomorrow, and if it is still down, leave it and check back
+  the next day.
