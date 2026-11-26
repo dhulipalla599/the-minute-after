@@ -60,3 +60,7 @@ tall windows. Quiet, human, tender, no text in the image.
   when the service is back, then `python3 build.py`, commit, push.
 - Chapters 3-10: write the prompt for each chapter the same way, one image
   per chapter, after the chapter itself is written and approved.
+- 2026-11-26 10:23: second attempt, same result — the image service is
+  still unavailable (upstream 503, three attempts each for cover, Ch1, Ch2).
+  Do not keep retrying back-to-back; try again later (next session or
+  tomorrow) and check the service is back first.
