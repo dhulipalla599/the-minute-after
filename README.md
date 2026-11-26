@@ -1,4 +1,4 @@
-# The Minute After
+# The Minute After: Small Acts. Better Days.
 
 **Tagline:** One minute of thought, one small decent act, and the day gets better for everyone.
 
@@ -12,14 +12,17 @@ one-minute pause, the small better move, and why it worked.
 
 ## Voice
 
-The book is written close to the heart, in the voice of a seasoned writer:
-warm and plain, concrete in its detail, honest about what the narrator feels,
-and restrained about telling the reader what to think. Show the moment, let
-the feeling land, and let the lesson arrive on its own. Names are universal,
-belonging to no one country: Mara, Daniel, Samuel. No name should anchor a
-story to a single culture. Keep the chapter shape (the moment, the minute,
-the better move, why it worked, one line to carry), but let each section
-breathe as prose, not a list.
+The full master writing prompt lives in `WRITING_GUIDE.md` and governs
+every chapter: emotional depth shown through small physical details,
+realistic (not always neat) outcomes, a flawed and learning narrator,
+recurring characters, growing complexity across the book, no villains, and
+2-4 original, underline-worthy observations per chapter. The short version:
+close to the heart, narration as a very well-experienced writer (warm,
+plain, concrete, restrained; show the moment, let the lesson arrive on its
+own), and universal names belonging to no one country (Mara, Daniel,
+Samuel). Keep the chapter shape (the moment, the minute, the better move,
+why it worked, one line to carry), but let each section breathe as prose,
+not a list.
 
 ## Chapters
 

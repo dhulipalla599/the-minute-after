@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parent
 CHAPTERS_DIR = ROOT / "chapters"
 DOCS_DIR = ROOT / "docs"
 TITLE = "The Minute After"
+SUBTITLE = "Small Acts. Better Days."
 TAGLINE = "One minute of thought, one small decent act, and the day gets better for everyone."
 AUTHOR = "Venkata Sandeep Dhullipalla"
 
@@ -73,7 +74,7 @@ def build_site(chapters):
     index_body = f"""
 <div class="topnav"><a href="index.html">{TITLE}</a></div>
 <div class="cover">
-<div class="kicker">A book of small better days</div>
+<div class="kicker">{SUBTITLE}</div>
 <h1>{TITLE}</h1>
 <p class="tagline">{TAGLINE}</p>
 <p class="author">by {AUTHOR}</p>
@@ -150,7 +151,7 @@ def build_preview(chapters):
 <body>
 <div class="wrap">
 <div class="cover">
-<div class="kicker">A book of small better days</div>
+<div class="kicker">{SUBTITLE}</div>
 <h1>{TITLE}</h1>
 <p class="tagline">{TAGLINE}</p>
 <p class="author">by {AUTHOR}</p>
@@ -176,6 +177,7 @@ def build_epub(chapters):
     cmd = [
         "pandoc", "-o", str(ROOT / "book.epub"),
         "--metadata", f"title={TITLE}",
+        "--metadata", f"subtitle={SUBTITLE}",
         "--metadata", f"author={AUTHOR}",
         "--metadata", "language=en",
         "--toc", "--toc-depth=1", "--split-level=1",
