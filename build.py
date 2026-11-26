@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parent
 CHAPTERS_DIR = ROOT / "chapters"
 DOCS_DIR = ROOT / "docs"
 ASSETS_DIR = ROOT / "assets"
-COVER_IMG = ASSETS_DIR / "cover.png"
+COVER_IMG = ASSETS_DIR / "cover.jpg"
 TITLE = "The Minute After"
 SUBTITLE = "Small Acts. Better Days."
 TAGLINE = "One minute of thought, one small decent act, and the day gets better for everyone."
@@ -40,7 +40,7 @@ def parse_chapter(path):
 
 
 def illustration_path(chapter_path):
-    return ASSETS_DIR / f"illustration-{chapter_path.stem}.png"
+    return ASSETS_DIR / f"illustration-{chapter_path.stem}.jpg"
 
 
 def data_uri(path):
@@ -94,7 +94,7 @@ def build_site(chapters):
     DOCS_DIR.mkdir(parents=True)
     shutil.copy(ASSETS_DIR / "style.css", DOCS_DIR / "style.css")
     if COVER_IMG.exists():
-        shutil.copy(COVER_IMG, DOCS_DIR / "cover.png")
+        shutil.copy(COVER_IMG, DOCS_DIR / COVER_IMG.name)
     for path, _t, _x, _f in chapters:
         ill = illustration_path(path)
         if ill.exists():
@@ -114,7 +114,7 @@ def build_site(chapters):
     index_body = f"""
 <div class="topnav"><a href="index.html">{TITLE}</a></div>
 <div class="cover">
-{cover_block("cover.png" if COVER_IMG.exists() else None)}
+{cover_block(COVER_IMG.name if COVER_IMG.exists() else None)}
 </div>
 <hr class="rule">
 <p>We all have those moments. You know the right thing, and you feel you can do nothing about it. Someone is pressured in a meeting. Someone helpless is treated badly. The room goes quiet, and you go quiet with it.</p>

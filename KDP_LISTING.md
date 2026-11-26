@@ -1,7 +1,7 @@
 # KDP Listing — The Minute After
 
 Ready-to-paste listing for Kindle Direct Publishing (kdp.amazon.com).
-The EPUB is `book.epub`; the cover is `assets/cover.png` (1600x2560,
+The EPUB is `book.epub`; the cover is `assets/cover.jpg` (1600x2560,
 KDP-ideal size). You own the rights; no ISBN needed, KDP assigns an ASIN.
 
 ## Title
@@ -70,7 +70,7 @@ everyone.
    1a218baeefd7e3a5). The code is in that email; Amazon codes expire, so use
    it promptly. Do not share it with anyone.
 2. Sign in at kdp.amazon.com and create a new Kindle eBook.
-3. Upload `book.epub` as the manuscript and `assets/cover.png` as the cover.
+3. Upload `book.epub` as the manuscript and `assets/cover.jpg` as the cover.
 4. Paste the title, subtitle, author, description, and keywords above;
    choose two categories.
 5. Set the price (see Pricing above); decide on KDP Select enrollment.
@@ -79,6 +79,7 @@ everyone.
 
 ## Status
 
-- 2026-11-26: listing drafted, cover built (typographic, KDP-ready). Not
+- 2026-11-26: listing drafted, cover built (cartoonist ink-sketch,
+  1600x2560 JPEG; typographic cover kept as backup). Not
   yet submitted to KDP; submission is the author's step, in his own Amazon
   account.
